@@ -1,0 +1,52 @@
+def magicsquare(board, move, player):
+    magic = [[8, 1, 6], [3, 5, 7], [4, 9, 2]]
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] == ' ' and magic[i][j] == move:
+                board[i][j] = player
+                return True
+    return False
+
+def printboard(board):
+    for row in board:
+        print("|".join(row))
+        print("--+--+--")
+
+def checkwin(board, player):
+    for i in range(3):
+        if all(board[i][j] == player for j in range(3)) or \
+           all(board[j][i] == player for j in range(3)) or\
+           all(board[i][i] == player for i in range(3)) or \
+           all(board[i][2 - i] == player for i in range(3)):
+           	  return True
+    return False
+
+def tictac():
+    board = [[' ' for _ in range(3)] for _ in range(3)]
+    players = ["X", "O"]
+    curr_player = 0
+    used_moves = set()
+
+    while len(used_moves) < 9:
+        printboard(board)
+        try:
+            move = int(input(f"Player {players[curr_player]}, enter move (1-9): "))
+            if move not in range(1, 10) or move in used_moves:
+                print("Invalid entry or move already used.")
+                continue
+            if not magicsquare(board, move, players[curr_player]):
+                print("That space is taken.")
+                continue
+            used_moves.add(move)
+            if checkwin(board, players[curr_player]):
+                printboard(board)
+                print(f"Player {players[curr_player]} wins!")
+                return
+            curr_player = 1 - curr_player
+        except ValueError:
+            print("Please enter a number between 1 and 9.")
+    
+    printboard(board)
+    print("It's a tie!")
+
+tictac()
