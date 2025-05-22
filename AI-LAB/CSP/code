@@ -1,0 +1,41 @@
+def is_safe(node, color, graph, assignment):
+    return all(assignment.get(nei) != color for nei in graph[node])
+
+def forward_checking(graph, colors, node=0, assignment={}):
+    if node == len(graph):
+        return assignment
+    for color in colors:
+        if is_safe(node, color, graph, assignment):
+            assignment[node] = color
+            result = forward_checking(graph, colors, node + 1, assignment)
+            if result:
+                return result
+            del assignment[node]
+    return False
+
+def tree_decomposition(graph):
+    return [[node] + graph[node] for node in graph]
+
+def color_tree(tree, colors):
+    assignment = {}
+    for comp in tree:
+        for node in comp:
+            for color in colors:
+                if all(assignment.get(n) != color for n in comp if n != node):
+                    assignment[node] = color
+                    break
+    return assignment
+
+def solve(graph, colors, method):
+    if method == 1:
+        return forward_checking(graph, colors)
+    elif method == 2:
+        return color_tree(tree_decomposition(graph), colors)
+    return "Invalid choice."
+
+# Example usage
+graph = {   0: [1, 2,4],    1: [0, 2, 3],    2: [0, 1, 3,4],    3: [1, 2],    4:[0,2]}
+colors = ["Red", "Blue", "Green"]
+choice = int(input("1: Forward Checking\n2: Tree Decomposition\nChoose: "))
+print("Solution:", solve(graph, colors, choice))
+
