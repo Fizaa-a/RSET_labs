@@ -1,1 +1,40 @@
+def ao_star(graph, start, goal, heuristics):
+    open_set, closed_set = {start}, set()
+    g, parents = {start: 0}, {start: start}
+
+    while open_set:
+        n = min(open_set, key=lambda v: g[v] + heuristics[v])
+        open_set.remove(n)
+        closed_set.add(n)
+
+        if n == goal:
+            path = []
+            while parents[n] != n:
+                path.append(n)
+                n = parents[n]
+            path.append(start)
+            return path[::-1]
+
+        for successors, weight in graph.get(n, []):
+            for m in successors:
+                if m not in closed_set:
+                    new_cost = g[n] + weight
+                    if m not in open_set or new_cost < g[m]:
+                        g[m], parents[m] = new_cost, n
+                        open_set.add(m)
+                        closed_set.discard(m)
+
+    return None
+
+if __name__ == "__main__":
+    graph = eval(input("Enter AND-OR graph: "))
+    print(f"Graph: {graph}")
+
+    start, goal = input("Start node: "), input("Goal node: ")
+    heuristics = eval(input("Enter node heuristics: "))
+
+    path = ao_star(graph, start, goal, heuristics)
+    print(f"Path: {path}" if path else "Path does not exist!")
+
+
 
