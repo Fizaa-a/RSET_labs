@@ -1,0 +1,30 @@
+import random
+def hangman():
+    w=["apple","banana"]
+    word=random.choice(w)
+    guessedletter=set()
+    chances=len(word)+2
+    guess=['_' for _ in word]
+    while chances>0:
+        print("\nWord:"," ".join(guess))
+        print("Chances:",chances)
+        letter=input("Guess letter:")
+        if not letter.isalpha or len(letter)!=1:
+            print("Enter single letter")
+            continue
+        if letter in guessedletter:
+            print("Already guessed")
+            continue
+        guessedletter.add(letter)
+        if letter in word:
+            for i,c in enumerate(word):
+                if c==letter:
+                    guess[i]=letter
+            if '_' not in guess:
+                print("You guessed it! word:",word)
+                return
+        else:
+            print("wrong guess")
+            chances=chances-1
+    print("out of chances!")
+hangman()
