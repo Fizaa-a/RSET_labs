@@ -1,0 +1,36 @@
+import math
+
+# Minimax function with Alpha-Beta Pruning
+def minimax(depth, nodeIndex, maximizingPlayer, values, alpha, beta):
+    if depth == 0 or nodeIndex >= len(values):
+        return values[nodeIndex]
+
+    if maximizingPlayer:
+        best = -math.inf
+        for i in range(2):  # Assuming a binary tree structure
+            val = minimax(depth - 1, nodeIndex * 2 + i, False, values, alpha, beta)
+            best = max(best, val)
+            alpha = max(alpha, best)
+            if beta <= alpha:
+                break  # Pruning occurs
+        return best
+    else:
+        best = math.inf
+        for i in range(2):  # Assuming a binary tree structure
+            val = minimax(depth - 1, nodeIndex * 2 + i, True, values, alpha, beta)
+            best = min(best, val)
+            beta = min(beta, best)
+            if beta <= alpha:
+                break  # Pruning occurs
+        return best
+
+# Example usage:
+values = [3, 5, 6, 9, 1, 2, 0, -1]  # Sample leaf node values
+depth = 3
+nodeIndex = 0
+alpha = -math.inf
+beta = math.inf
+
+best_value = minimax(depth, nodeIndex, True, values, alpha, beta)
+print(f"The optimal value is: {best_value}")s
+
