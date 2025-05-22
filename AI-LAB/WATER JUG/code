@@ -1,0 +1,31 @@
+def waterjug(cap1,cap2,target):
+    initial=(0,0)
+    visited=set()
+    queue=[(initial,[])]
+    while queue:
+        (j1,j2),path=queue.pop(0)
+        if j1==target or j2==target:
+            return path
+        visited.add((j1,j2))
+        if(cap1,j2) not in visited:
+            queue.append(((cap1,j2),path+[f"Fill j1: {cap1,j2}"]))
+        if(j1,cap2) not in visited:
+            queue.append(((j1,cap2),path+[f"Fill j2"]))
+        if(j1,0) not in visited:
+            queue.append(((j1,0),path+[f"empty j2"]))
+        if(0,j2) not in visited:
+            queue.append(((0,j2),path+[f"empty j1"]))
+        p1to2=min(j1,cap2-j2)
+        newj1,newj2=j1-p1to2,j2+p1to2
+        if(newj1,newj2) not in visited:
+            queue.append(((newj1,newj2),path+[f"pour j1 to j2"]))
+        p2to1=min(cap1-j1,j2)
+        newj1,newj2=j1+p2to1,j2-p2to1
+        if(newj1,newj2) not in visited:
+            queue.append(((newj1,newj2),path+[f"pour j2 to j1"]))
+    return "No solution"
+
+cap1,cap2,target=4,3,2
+soln=waterjug(cap1,cap2,target)
+for step in soln:
+    print(step)
