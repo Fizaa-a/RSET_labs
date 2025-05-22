@@ -1,0 +1,39 @@
+responses = {
+    "hi": "Hello! How are you?",
+    "hello": "Hi there! 😊",
+    "how are you": "I'm just a bunch of code, but I'm doing great! How about you?",
+    "what is your name": "I'm a chatbot, your virtual assistant.",
+    "who created you": "I was created by a curious human with code and coffee!",
+    "what do you like": "I like chatting with friendly people like you!",
+    "thank you": "You're welcome! 😊",
+    "tell me a joke": "Why don’t scientists trust atoms? Because they make up everything!",
+    "what can you do": "I can chat with you, tell jokes, answer simple questions, and keep you company.",
+    "do you like me": "Of course! You're awesome 💙",
+    "are you real": "I’m as real as your imagination allows 😄",
+    "help": "Try asking: 'hi', 'how are you', 'what do you like', 'tell me a joke', or 'bye' to exit."
+}
+
+def chatbot():
+    print("Chatbot: Hi! How can I help you today?")
+    while True:
+        user_input = input("You: ").strip().lower()
+        
+        if user_input == "bye":
+            print("Chatbot: Bye! Take care 👋")
+            break
+
+        # Exact match
+        reply = responses.get(user_input)
+
+        # Try keyword matching if no exact match
+        if reply is None:
+            for key in responses:
+                if key in user_input:
+                    reply = responses[key]
+                    break
+            else:
+                reply = "Sorry, I didn't get that. Type 'help' to see what I can answer."
+
+        print(f"Chatbot: {reply}")
+
+chatbot()
